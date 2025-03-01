@@ -1,0 +1,14 @@
+export const host = "http://localhost:4000";
+export const loginRoute = `${host}/users/login`;
+export const registerRoute = `${host}/users/register`;
+// export const logoutRoute = `${host}/api/auth/logout`;
+// export const allUsersRoute = `${host}/api/auth/allusers`;
+// export const sendMessageRoute = `${host}/api/messages/addmsg`;
+// export const recieveMessageRoute = `${host}/api/messages/getmsg`;
+// export const setAvatarRoute = `${host}/api/auth/setavatar`;
+export const popularinwomen = `${host}/products/popularinwomen`;
+export const allProducts = `${host}/products/allproducts`;
+export const getCart = `${host}/users/getcart`;
+export const adToCart = `${host}/users/addtocart`;
+export const removeCart = `${host}/products/removefromcart`;
+export const newcollections = `${host}/products/newcollections`;
