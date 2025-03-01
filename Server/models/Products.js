@@ -1,10 +1,13 @@
 const mongoose = require("mongoose");
 
 const productSchema = new mongoose.Schema({
+  id: {
+    type: Number,
+    required: true,
+  },
   name: {
     type: String,
     required: true,
-    trim: true, // Removes leading/trailing whitespace
   },
   image: {
     type: String,
@@ -13,17 +16,14 @@ const productSchema = new mongoose.Schema({
   category: {
     type: String,
     required: true,
-    trim: true,
   },
   new_price: {
     type: Number,
     required: true,
-    min: 0, // Ensures price is not negative
   },
   old_price: {
     type: Number,
     required: true,
-    min: 0,
   },
   date: {
     type: Date,

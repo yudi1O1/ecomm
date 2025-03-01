@@ -12,9 +12,11 @@ const Product = () => {
   const product = all_product.find((e)=>
      e.id === Number(productId)
   )
+  console.log(Product);
+  
   return (
     <div>
-      <Breadcrum product = {product}/>
+      <Breadcrum product={product} />
       <ProductDisplay product={product}/>
       <DescriptionBox/>
       <RelatedProducts/>

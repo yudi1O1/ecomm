@@ -10,5 +10,5 @@ export const popularinwomen = `${host}/products/popularinwomen`;
 export const allProducts = `${host}/products/allproducts`;
 export const getCart = `${host}/users/getcart`;
 export const adToCart = `${host}/users/addtocart`;
-export const removeCart = `${host}/products/removefromcart`;
+export const removeCart = `${host}/users/removefromcart`;
 export const newcollections = `${host}/products/newcollections`;

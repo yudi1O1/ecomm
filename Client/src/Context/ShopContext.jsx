@@ -1,7 +1,7 @@
 import React, { createContext, useState } from "react";
 import { useEffect } from "react";
-import axios from "axios"; 
-import { allProducts, getCart,adToCart, removeCart } from "../utils/APIRoutes";
+import axios from "axios";
+import { allProducts, getCart, adToCart, removeCart } from "../utils/APIRoutes";
 
 export const ShopContext = createContext(null);
 const getDefaultCart = () => {
@@ -19,36 +19,72 @@ const ShopContextProvider = (props) => {
   useEffect(() => {
     axios
       .get(allProducts)
-      .then((response) => setAll_Product(response.data))
-      .catch((error) => console.error("Error fetching products:", error));
+      .then((res) => setAll_Product(res.data))
+      .catch((err) => console.error(err));
 
     if (localStorage.getItem("auth-token")) {
       axios
-        .post(getCart, {})
-        .then((response) => setCartItems(response.data))
-        .catch((error) => console.error("Error fetching cart items:", error));
+        .post(getCart,
+          {}, // Empty body
+          {
+            headers: {
+              Accept: "application/form-data",
+              "auth-token": `${localStorage.getItem("auth-token")}`,
+              "Content-Type": "application/json",
+            },
+          }
+        )
+        .then((res) => setCartItems(res.data))
+        .catch((err) => console.error(err));
     }
   }, []);
 
   const addToCart = (itemId) => {
-    setCartItems((prev) => ({ ...prev, [itemId]: prev[itemId] + 1 }));
+    setCartItems((prev) => ({ ...prev, [itemId]: (prev[itemId] || 0) + 1 }));
+  
     if (localStorage.getItem("auth-token")) {
       axios
-        .post(adToCart, { ItemId: itemId })
-        .then((response) => console.log(response.data))
-        .catch((error) => console.error("Error adding to cart:", error));
+        .post(adToCart,
+          { ItemId: itemId }, // Request body
+          {
+            headers: {
+              Accept: "application/form-data",
+              "auth-token": localStorage.getItem("auth-token"),
+              "Content-Type": "application/json",
+            },
+          }
+        )
+        .then((res) => console.log(res.data))
+        .catch((err) => console.error(err));
     }
   };
 
-  const removeFromCart = (itemId) => {
-    setCartItems((prev) => ({ ...prev, [itemId]: prev[itemId] - 1 }));
+
+
+  const removeFromCart = async (itemId) => {
+    setCartItems((prev) => {
+      const updatedCart = { ...prev, [itemId]: prev[itemId] - 1 };
+      if (updatedCart[itemId] <= 0) delete updatedCart[itemId]; // Remove item if count is 0
+      return updatedCart;
+    });
+  
     if (localStorage.getItem("auth-token")) {
-      axios
-        .post(removeCart, {
-          ItemId: itemId,
-        })
-        .then((response) => console.log(response.data))
-        .catch((error) => console.error("Error removing from cart:", error));
+      try {
+        const response = await axios.post(
+          removeCart,
+          { ItemId: itemId },
+          {
+            headers: {
+              Accept: "application/form-data",
+              "auth-token": localStorage.getItem("auth-token"),
+              "Content-Type": "application/json",
+            },
+          }
+        );
+        console.log(response.data);
+      } catch (error) {
+        console.error("Error removing from cart:", error);
+      }
     }
   };
 

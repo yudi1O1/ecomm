@@ -91,10 +91,12 @@ router.post("/addtocart", fetchUser, async (req, res) => {
   
   //creating endpoint to remove product from cart data
   
-  router.post("/removefromcart", fetchUser, async (req, res) => {
+router.post("/removefromcart", fetchUser, async (req, res) => {
+    console.log(req.body);
+    
     let userData = await Users.findOne({ _id: req.user.id });
   
-    if (userData.cartData[req.body.itemId] > 0)
+    if (userData.cartData[req.body.ItemId] > 0)
       userData.cartData[req.body.ItemId] -= 1;
     await Users.findOneAndUpdate(
       { _id: req.user.id },
